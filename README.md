@@ -80,6 +80,24 @@ IO Canary: 检测文件 IO 问题，包括：文件 IO 监控和 Closeable Leak 
 1. 启动就在开始了性能数据的搜集。
 2. 一旦有数据收集到，就会使用DataReporter来进行上报，当然真是的上报需要开发者自己实现，比如你可以上报到你们后台。这里的DataReporter可以理解为一个上报中转仓库，起到一个很好的缓冲作用。
 
+最终实现上报的数据可以参考：NetPost.java中
+```java
+IssueWrap issue = new GsonBuilder().create().fromJson(out.toString(), IssueWrap.class);
+if (issue.getTag().equals(com.tencent.matrix.resource.config.SharePluginInfo.TAG_PLUGIN)) {
+    // TODO: 2019/10/11 更具类型调用不同的接口上报数据
+} else if (issue.getTag().equals(com.tencent.matrix.trace.config.SharePluginInfo.TAG_PLUGIN)) {
+
+} else if (issue.getTag().equals(com.tencent.matrix.trace.config.SharePluginInfo.TAG_PLUGIN_EVIL_METHOD)) {
+
+} else if (issue.getTag().equals(com.tencent.matrix.trace.config.SharePluginInfo.TAG_PLUGIN_FPS)) {
+
+} else if (issue.getTag().equals(com.tencent.matrix.trace.config.SharePluginInfo.TAG_PLUGIN_STARTUP)) {
+
+} else if (issue.getTag().equals(com.tencent.matrix.iocanary.config.SharePluginInfo.TAG_PLUGIN)) {
+
+}
+```
+
 最后看看效果：
 ![](https://github.com/bravekingzhang/statis-report-framwork-android/blob/master/report-test.png)
 
